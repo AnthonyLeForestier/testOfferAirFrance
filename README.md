@@ -34,7 +34,7 @@ To check out the swagger, open a browser and key in URL:
 
 To check out openAPi 3, open a browser and key in URL:
 
-`http://localhost:8080/v3/api-docs/swaggerhttp://localhost:8080/v3/api-docs/swagger`
+`http://localhost:8080/v3/api-docs/swagger`
 
 ## Postman collection
 
