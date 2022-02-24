@@ -1,0 +1,601 @@
+{
+	"info": {
+		"_postman_id": "05cdb031-2ff6-42fa-ac4a-30e5b350363e",
+		"name": "Offer test AirFrance",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('User not found.');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v1/user/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Insert user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"    pm.expect(parseInt(responseJson.userName)).to.eql(pm.globals.get(\"userName\"));\r",
+							"    pm.expect(responseJson.birthdate).to.eql('1995-01-01');\r",
+							"    pm.expect(responseJson.countryResidence).to.eql('FRA');\r",
+							"    pm.expect(responseJson.phoneNumber).to.eql('0754425875');\r",
+							"    pm.expect(responseJson.gender).to.eql('M');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const userName = Math.floor((Math.random()*10000 +1));\r",
+							"pm.globals.set(\"userName\", userName);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : {{userName}},\r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					],
+					"query": [
+						{
+							"key": "Content-Type",
+							"value": "application/json;charset=UTF-8",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get user id:1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.userName).to.eql('Anthony');\r",
+							"   pm.expect(responseJson.birthdate).to.eql('1995-01-01');\r",
+							"   pm.expect(responseJson.countryResidence).to.eql('FRA');\r",
+							"   pm.expect(responseJson.phoneNumber).to.eql('0754425875');\r",
+							"   pm.expect(responseJson.gender).to.eql('M');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User already exists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('userName must be unique.');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Anthony\",\r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "userName required",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('userName is required.');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "birthdate validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('birthDate is required ans user must be adult.');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Thomas\",\r\n    \"birthdate\" : \"2050-01-01\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "birthdate required",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('birthDate is required ans user must be adult.');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Thomas\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "countryResidence validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('countryResidence is required and user must be French residence (FRA).');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Thomas\",\r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"countryResidence\" : \"FRB\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "contryResidence required",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('countryResidence is required and user must be French residence (FRA).');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Thomas\",\r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "phoneNumber validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('phoneNumber must be a valid phone number.');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Thomas\",\r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"07544258\",\r\n    \"gender\" : \"M\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "gender validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							"\r",
+							"const responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Response body test\", function () {\r",
+							"   pm.expect(responseJson.message).to.eql('gender must be a valid gender (M|W).');\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"userName\" : \"Thomas\",\r\n    \"birthdate\" : \"1995-01-01\",\r\n    \"countryResidence\" : \"FRA\",\r\n    \"phoneNumber\" : \"0754425875\",\r\n    \"gender\" : \"A\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

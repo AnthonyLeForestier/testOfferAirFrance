@@ -1,0 +1,1 @@
+INSERT INTO User (id, user_name, birthdate, country_residence, phone_number, gender) VALUES (id_user_sq.nextVal, 'Anthony', '1995-01-01', 'FRA', '0754425875', 'M');
